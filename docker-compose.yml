@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: devops-hackathon-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-devops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devopspassword}
+      POSTGRES_DB: ${POSTGRES_DB:-hackathon}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devops -d hackathon"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devops-hackathon-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-devops}:${POSTGRES_PASSWORD:-devopspassword}@postgres:5432/${POSTGRES_DB:-hackathon}?schema=public
+      - JWT_SECRET=${JWT_SECRET:-super_secret_devops_hackathon_key_2026}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@bitsathy.ac.in}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - SMTP_HOST=${SMTP_HOST:-smtp.ethereal.email}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devops-hackathon-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:5000}
+      - JWT_SECRET=${JWT_SECRET:-super_secret_devops_hackathon_key_2026}
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+    driver: local
