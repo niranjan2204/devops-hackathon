@@ -1,7 +1,8 @@
 # ----------------------------------------------------
 # Stage 1: Build & Compile TypeScript
 # ----------------------------------------------------
-FROM node:20-slim AS builder
+# Using full node:20 (Debian Bookworm) which has OpenSSL pre-installed out of the box
+FROM node:20 AS builder
 
 WORKDIR /app
 
@@ -24,7 +25,7 @@ RUN npm run build
 # ----------------------------------------------------
 # Stage 2: Production Runner
 # ----------------------------------------------------
-FROM node:20-slim AS runner
+FROM node:20 AS runner
 
 WORKDIR /app
 
