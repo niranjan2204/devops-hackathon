@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CheckCircle, XCircle, Clock, Users, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function AdminTeamManager() {
   const [teams, setTeams] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function AdminTeamManager() {
 
   const fetchTeams = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/teams");
+      const res = await fetch(`${API_BASE_URL}/api/admin/teams`);
       
       const contentType = res.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
@@ -38,7 +39,7 @@ export default function AdminTeamManager() {
 
   const updateStatus = async (teamId: string, status: string) => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/teams", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/teams`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ teamId, status })
@@ -54,7 +55,7 @@ export default function AdminTeamManager() {
   const deleteTeam = async (teamId: string) => {
     if (!confirm("Are you sure you want to permanently delete this team? This action cannot be undone.")) return;
     try {
-      const res = await fetch("http://localhost:5000/api/admin/teams", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/teams`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ teamId })

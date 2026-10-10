@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Settings, Save, Calendar } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 const toLocalISOString = (dateString: string) => {
   if (!dateString) return "";
@@ -17,7 +18,7 @@ export default function AdminSettingsManager() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/settings")
+    fetch(`${API_BASE_URL}/api/admin/settings`)
       .then(res => res.json())
       .then(data => {
         if (!data.error) {
@@ -33,7 +34,7 @@ export default function AdminSettingsManager() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/settings", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/settings`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(config)

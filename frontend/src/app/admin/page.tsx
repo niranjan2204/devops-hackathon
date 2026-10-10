@@ -3,9 +3,10 @@ import { verifyToken } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Users, Server, FileCode2, Clock } from "lucide-react";
 import AdminDashboardTabs from "@/components/AdminDashboardTabs";
+import { API_BASE_URL } from "@/lib/api";
 
 export default async function AdminDashboardPage() {
-  const res = await fetch("http://localhost:5000/api/admin/stats", { cache: 'no-store' });
+  const res = await fetch(`${API_BASE_URL}/api/admin/stats`, { cache: 'no-store' });
   const data = await res.json();
   
   const totalTeams = data.totalTeams;

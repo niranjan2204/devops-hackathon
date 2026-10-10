@@ -3,13 +3,14 @@
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function ContactPage() {
   const [config, setConfig] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/config")
+    fetch(`${API_BASE_URL}/api/config`)
       .then(res => res.json())
       .then(data => {
         if (!data.error) {

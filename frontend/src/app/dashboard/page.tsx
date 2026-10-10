@@ -3,6 +3,7 @@ import { verifyToken } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LogOut, Users, FileCode2, Clock, AlertCircle, CheckCircle2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -13,7 +14,7 @@ export default async function DashboardPage() {
   const payload = await verifyToken(token);
   if (!payload || payload.role !== "team_leader") throw new Error("Dashboard: Invalid payload or role");
 
-  const res = await fetch(`http://localhost:5000/api/team/${payload.teamId}`, { cache: 'no-store' });
+  const res = await fetch(`${API_BASE_URL}/api/team/${payload.teamId}`, { cache: 'no-store' });
   const team = await res.json();
 
   if (!team || team.error) {

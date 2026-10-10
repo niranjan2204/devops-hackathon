@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Lock, User, AlertCircle, LogIn, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function LoginPage() {
   const [role, setRole] = useState<"leader" | "admin">("leader");
@@ -19,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const endpoint = role === "admin" ? "http://localhost:5000/api/admin/login" : "http://localhost:5000/api/login";
+      const endpoint = role === "admin" ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/login`;
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

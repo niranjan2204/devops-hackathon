@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, FileCode2, AlertCircle, CheckCircle2, Shield, LockOpen, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function ProblemsPage() {
   const [data, setData] = useState<any>(null);
@@ -15,7 +16,7 @@ export default function ProblemsPage() {
 
   const fetchProblems = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/problems");
+      const res = await fetch(`${API_BASE_URL}/api/problems`);
       const result = await res.json();
       setData(result);
     } catch (err) {
@@ -38,7 +39,7 @@ export default function ProblemsPage() {
     setSelecting(problemId);
 
     try {
-      const res = await fetch("http://localhost:5000/api/problems", {
+      const res = await fetch(`${API_BASE_URL}/api/problems`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

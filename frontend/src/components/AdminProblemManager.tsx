@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, Trash2, Loader2, CheckCircle2, Edit2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function AdminProblemManager({ initialProblems }: { initialProblems: any[] }) {
   const [title, setTitle] = useState("");
@@ -22,7 +23,7 @@ export default function AdminProblemManager({ initialProblems }: { initialProble
     setSuccess("");
 
     try {
-      const url = editingId ? `http://localhost:5000/api/admin/problems?id=${editingId}` : "http://localhost:5000/api/admin/problems";
+      const url = editingId ? `${API_BASE_URL}/api/admin/problems?id=${editingId}` : `${API_BASE_URL}/api/admin/problems`;
       const method = editingId ? "PUT" : "POST";
       
       const res = await fetch(url, {
@@ -52,7 +53,7 @@ export default function AdminProblemManager({ initialProblems }: { initialProble
     if (!confirm("Are you sure you want to delete this problem statement?")) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/problems?id=${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/problems?id=${id}`, {
         method: "DELETE"
       });
       if (!res.ok) throw new Error("Failed to delete problem");

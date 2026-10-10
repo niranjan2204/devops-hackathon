@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Server, Shield, Database, Cloud, GitBranch, TerminalSquare, Container, Globe, Cpu, Blocks, Trophy } from "lucide-react";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/lib/api";
 
 function FloatingParticles() {
   const [mounted, setMounted] = useState(false);
@@ -49,7 +50,7 @@ function Countdown() {
   useEffect(() => {
     let interval: any;
     
-    fetch("http://localhost:5000/api/config")
+    fetch(`${API_BASE_URL}/api/config`)
       .then(res => res.json())
       .then(data => {
         if (data && data.hackathonStart) {
@@ -177,7 +178,7 @@ export default function Home() {
   const [maxTeams, setMaxTeams] = useState(50);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/config")
+    fetch(`${API_BASE_URL}/api/config`)
       .then(res => res.json())
       .then(data => {
         if (data && data.maxTeams) {
