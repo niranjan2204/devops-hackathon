@@ -1,12 +1,9 @@
 # ----------------------------------------------------
 # Stage 1: Build & Compile TypeScript
 # ----------------------------------------------------
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
-
-# Install openssl and libc compatibility required by Prisma engines on Alpine
-RUN apk add --no-cache openssl libc6-compat
 
 # Install all dependencies (including devDependencies) for build
 COPY package*.json ./
@@ -27,15 +24,12 @@ RUN npm run build
 # ----------------------------------------------------
 # Stage 2: Production Runner
 # ----------------------------------------------------
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=5000
-
-# Install openssl and libc compatibility required by Prisma engines at runtime
-RUN apk add --no-cache openssl libc6-compat
 
 # Install production dependencies
 COPY package*.json ./
