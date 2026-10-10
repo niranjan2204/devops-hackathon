@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Team {
+  id               String            @id @default(cuid())
+  teamId           String            @unique
+  teamName         String            @unique
+  passwordHash     String
+  plainPassword    String?
+  registeredAt     DateTime          @default(now())
+  status           String            @default("PENDING")
+  members          TeamMember[]
+  problemSelection ProblemSelection?
+  winner           Winner?
+}
+
+model TeamMember {
+  id             String  @id @default(cuid())
+  teamId         String
+  team           Team    @relation(fields: [teamId], references: [id])
+  name           String
+  registerNumber String  @unique
+  email          String  @unique
+  phone          String?
+  isLeader       Boolean @default(false)
+}
+
+model ProblemStatement {
+  id          String            @id @default(cuid())
+  title       String
+  description String
+  domain      String
+  difficulty  String
+  status      String            @default("AVAILABLE")
+  selection   ProblemSelection?
+}
+
+model ProblemSelection {
+  id                 String           @id @default(cuid())
+  problemStatementId String           @unique
+  teamId             String           @unique
+  selectedAt         DateTime         @default(now())
+  problemStatement   ProblemStatement @relation(fields: [problemStatementId], references: [id])
+  team               Team             @relation(fields: [teamId], references: [id])
+}
+
+model HackathonConfig {
+  id                String   @id @default("default")
+  hackathonName     String   @default("DevOps Hackathon 2026")
+  registrationStart DateTime @default(now())
+  registrationEnd   DateTime @default(now())
+  hackathonStart    DateTime @default(now())
+  hackathonEnd      DateTime @default(now())
+  maxTeams          Int      @default(50)
+  selectionStart    DateTime @default(now())
+  selectionEnd      DateTime @default(now())
+  
+  facultyName       String   @default("Dr. Smith (Faculty)")
+  facultyEmail      String   @default("faculty@bitsathy.ac.in")
+  facultyPhone      String   @default("+91 98765 43210")
+  
+  org1Name          String   @default("John Doe (Organizer)")
+  org1Email         String   @default("org1@bitsathy.ac.in")
+  org1Phone         String   @default("+91 98765 43211")
+  
+  org2Name          String   @default("Jane Doe (Organizer)")
+  org2Email         String   @default("org2@bitsathy.ac.in")
+  org2Phone         String   @default("+91 98765 43212")
+  
+  contactAddress    String   @default("Bannari Amman Institute of Technology, Sathyamangalam, Erode, Tamil Nadu 638401")
+  updatedAt         DateTime @updatedAt
+}
+
+model Winner {
+  id       String @id @default(cuid())
+  position Int    @unique
+  teamId   String @unique
+  points   Int
+  team     Team   @relation(fields: [teamId], references: [id])
+}
