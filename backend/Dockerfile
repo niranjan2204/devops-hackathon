@@ -5,6 +5,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Install openssl and libc compatibility required by Prisma engines on Alpine
+RUN apk add --no-cache openssl libc6-compat
+
 # Install all dependencies (including devDependencies) for build
 COPY package*.json ./
 COPY prisma ./prisma/
@@ -30,6 +33,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=5000
+
+# Install openssl and libc compatibility required by Prisma engines at runtime
+RUN apk add --no-cache openssl libc6-compat
 
 # Install production dependencies
 COPY package*.json ./
