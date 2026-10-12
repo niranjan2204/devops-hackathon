@@ -8,15 +8,18 @@ async function main() {
   // Create Hackathon Config
   await prisma.hackathonConfig.upsert({
     where: { id: "default" },
-    update: {},
+    update: {
+      hackathonName: "DevSprint 2026",
+      maxTeams: 30
+    },
     create: {
       id: "default",
-      hackathonName: "DevOps Hackathon 2026",
+      hackathonName: "DevSprint 2026",
       registrationStart: new Date(now.getTime() - 1000 * 60 * 60 * 24), // started yesterday
       registrationEnd: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7), // ends in 7 days
       hackathonStart: new Date(now.getTime() - 1000 * 60), // started 1 min ago so problems are unlocked
       hackathonEnd: new Date(now.getTime() + 1000 * 60 * 60 * 48), // ends in 48 hours
-      maxTeams: 50
+      maxTeams: 30
     }
   });
 

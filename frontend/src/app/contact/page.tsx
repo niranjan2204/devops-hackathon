@@ -43,7 +43,7 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 font-mono text-sm max-w-xl mx-auto"
           >
-            Have questions about the Hackathon? Our team is here to help you out.
+            Have questions about DevSprint 2026? Our team is here to help you out.
           </motion.p>
         </div>
 

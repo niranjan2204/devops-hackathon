@@ -54,6 +54,14 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: "Invalid team data. Must have 2 to 3 members." });
     }
 
+    let config = await prisma.hackathonConfig.findUnique({ where: { id: "default" } });
+    const maxTeams = config?.maxTeams ?? 30;
+    const currentTeamCount = await prisma.team.count();
+
+    if (currentTeamCount >= maxTeams) {
+      return res.status(400).json({ error: "Registration is closed. The maximum capacity of 30 teams has been reached." });
+    }
+
     const existingTeam = await prisma.team.findUnique({ where: { teamName } });
     if (existingTeam) return res.status(400).json({ error: "Team name already exists" });
 
@@ -91,9 +99,34 @@ router.get('/config', async (req, res) => {
   try {
     let config = await prisma.hackathonConfig.findUnique({ where: { id: "default" } });
     if (!config) {
-      config = await prisma.hackathonConfig.create({ data: { id: "default" } });
+      config = await prisma.hackathonConfig.create({
+        data: {
+          id: "default",
+          hackathonName: "DevSprint 2026",
+          maxTeams: 30
+        }
+      });
+    } else if (config.hackathonName === "DevOps Hackathon 2026" || config.maxTeams === 50) {
+      config = await prisma.hackathonConfig.update({
+        where: { id: "default" },
+        data: {
+          hackathonName: config.hackathonName === "DevOps Hackathon 2026" ? "DevSprint 2026" : config.hackathonName,
+          maxTeams: config.maxTeams === 50 ? 30 : config.maxTeams
+        }
+      });
     }
-    res.json(config);
+
+    const teamCount = await prisma.team.count();
+    const maxTeams = config.maxTeams || 30;
+    const isRegistrationClosed = teamCount >= maxTeams;
+
+    res.json({
+      ...config,
+      hackathonName: config.hackathonName || "DevSprint 2026",
+      maxTeams,
+      teamCount,
+      isRegistrationClosed
+    });
   } catch (error: any) {
     res.status(500).json({ error: "Failed to fetch config" });
   }
@@ -250,7 +283,15 @@ router.delete('/admin/teams', async (req, res) => {
 router.get('/admin/settings', async (req, res) => {
   try {
     let config = await prisma.hackathonConfig.findUnique({ where: { id: "default" } });
-    if (!config) config = await prisma.hackathonConfig.create({ data: { id: "default" } });
+    if (!config) {
+      config = await prisma.hackathonConfig.create({
+        data: {
+          id: "default",
+          hackathonName: "DevSprint 2026",
+          maxTeams: 30
+        }
+      });
+    }
     res.json(config);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -264,7 +305,10 @@ router.put('/admin/settings', async (req, res) => {
     const updateData = { ...data };
     const dateFields = ['registrationStart', 'registrationEnd', 'hackathonStart', 'hackathonEnd', 'selectionStart', 'selectionEnd'];
     dateFields.forEach(field => { if (updateData[field]) updateData[field] = new Date(updateData[field]); });
-    
+    if (updateData.maxTeams !== undefined) {
+      updateData.maxTeams = parseInt(updateData.maxTeams, 10);
+    }
+
     const config = await prisma.hackathonConfig.upsert({
       where: { id: "default" },
       update: updateData,
@@ -280,7 +324,7 @@ router.get('/admin/stats', async (req, res) => {
   try {
     const totalTeams = await prisma.team.count();
     let config = await prisma.hackathonConfig.findUnique({ where: { id: "default" } });
-    const maxTeams = config?.maxTeams || 50;
+    const maxTeams = config?.maxTeams || 30;
     
     const totalProblems = await prisma.problemStatement.count();
     const selectedProblems = await prisma.problemSelection.count();

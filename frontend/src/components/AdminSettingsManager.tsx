@@ -60,7 +60,7 @@ export default function AdminSettingsManager() {
     <div className="w-full mt-8">
       <div className="glass-panel p-6 md:p-8 rounded-xl border border-gray-800">
         <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-yellow-400">
-          <Settings className="w-5 h-5" /> Hackathon Configuration
+          <Settings className="w-5 h-5" /> DevSprint Configuration
         </h2>
         
         <form onSubmit={handleSave} className="space-y-8 max-w-4xl">
@@ -74,12 +74,22 @@ export default function AdminSettingsManager() {
               
               <div className="space-y-4">
                 <div>
+                  <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">Hackathon Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={config.hackathonName || "DevSprint 2026"}
+                    onChange={(e) => setConfig({...config, hackathonName: e.target.value})}
+                    className="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-[#00f3ff] transition-all"
+                  />
+                </div>
+                <div>
                   <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">Maximum Allowed Teams</label>
                   <input 
                     type="number" 
                     required
                     min="1"
-                    value={config.maxTeams || 50}
+                    value={config.maxTeams ?? 30}
                     onChange={(e) => setConfig({...config, maxTeams: parseInt(e.target.value)})}
                     className="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-[#00f3ff] transition-all"
                   />

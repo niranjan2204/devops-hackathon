@@ -15,8 +15,8 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "DevOps Hackathon 2026 | Bannari Amman Institute of Technology",
-  description: "A competitive DevOps-focused hackathon where teams solve real-world technology challenges.",
+  title: "DevSprint 2026 | Bannari Amman Institute of Technology",
+  description: "DevSprint 2026 - A competitive DevOps-focused hackathon where teams solve real-world technology challenges.",
 };
 
 function Navbar() {
@@ -39,8 +39,8 @@ function Navbar() {
             </Link>
             <div className="ml-5 pl-5 border-l border-white/20 hidden xl:flex flex-col justify-center">
               <span className="font-black text-xl tracking-tighter flex items-center gap-1">
-                <span className="text-white">DevOps</span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-[#ff00ea]">Community</span>
+                <span className="text-white">DEVSPRINT</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-[#ff00ea]">2026</span>
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@ function Footer() {
           <Link href="/contact" className="hover:text-white">Contact</Link>
         </div>
         <p className="font-bold text-gray-300">Bannari Amman Institute of Technology</p>
-        <p className="mt-2 text-gray-500">© 2026 DevOps Community. All rights reserved.</p>
+        <p className="mt-2 text-gray-500">© 2026 DevSprint. All rights reserved.</p>
       </div>
     </footer>
   );

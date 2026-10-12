@@ -29,7 +29,7 @@ export default function AdminDashboardTabs({ initialProblems }: { initialProblem
           onClick={() => setActiveTab("settings")}
           className={`flex items-center gap-2 px-6 py-3 font-bold transition-colors border-b-2 ${activeTab === "settings" ? "border-yellow-400 text-yellow-400" : "border-transparent text-gray-500 hover:text-gray-300"}`}
         >
-          <Settings className="w-4 h-4" /> Hackathon Settings
+          <Settings className="w-4 h-4" /> DevSprint Settings
         </button>
       </div>
 

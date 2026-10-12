@@ -81,7 +81,7 @@ export default function ProblemsPage() {
             <Lock className="w-10 h-10 text-gray-400" />
           </div>
           <h1 className="text-3xl font-bold text-white mb-4 uppercase">PROBLEM STATEMENTS LOCKED</h1>
-          <p className="text-gray-400 mb-8">Problem statements will be revealed when the hackathon begins.</p>
+          <p className="text-gray-400 mb-8">Problem statements will be revealed when DevSprint 2026 begins.</p>
           
           <div className="bg-black/50 p-6 rounded-xl border border-gray-800">
             <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">STARTING IN</p>

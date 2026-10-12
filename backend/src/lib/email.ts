@@ -13,20 +13,20 @@ const transporter = nodemailer.createTransport({
 export const sendRegistrationEmail = async (teamName: string, leaderEmail: string, teamId: string, password: string) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Hackathon Admin" <noreply@hackathon.com>',
+      from: '"DevSprint Admin" <noreply@devsprint.com>',
       to: leaderEmail,
-      subject: "Hackathon Team Registration Successful!",
-      text: `Hello ${teamName},\n\nYour team has been successfully registered!\n\nTeam ID: ${teamId}\nPortal Password: ${password}\n\nPlease keep these credentials safe. You will need them to log in to the portal.\n\nBest regards,\nHackathon Team`,
+      subject: "DevSprint 2026 Team Registration Successful!",
+      text: `Hello ${teamName},\n\nYour team has been successfully registered for DevSprint 2026!\n\nTeam ID: ${teamId}\nPortal Password: ${password}\n\nPlease keep these credentials safe. You will need them to log in to the portal.\n\nBest regards,\nDevSprint Team`,
       html: `
         <h2>Registration Successful!</h2>
         <p>Hello <strong>${teamName}</strong>,</p>
-        <p>Your team has been successfully registered for the hackathon!</p>
+        <p>Your team has been successfully registered for DevSprint 2026!</p>
         <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <p><strong>Team ID:</strong> <span style="color: #007bff;">${teamId}</span></p>
           <p><strong>Portal Password:</strong> <span style="color: #d97706;">${password}</span></p>
         </div>
         <p>Please keep these credentials safe. You will need them to log in to the participant portal.</p>
-        <p>Best regards,<br/>Hackathon Admin Team</p>
+        <p>Best regards,<br/>DevSprint Admin Team</p>
       `
     });
 

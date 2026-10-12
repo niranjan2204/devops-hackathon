@@ -175,14 +175,20 @@ function DevOpsOrbit() {
 }
 
 export default function Home() {
-  const [maxTeams, setMaxTeams] = useState(50);
+  const [maxTeams, setMaxTeams] = useState(30);
+  const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/config`)
       .then(res => res.json())
       .then(data => {
-        if (data && data.maxTeams) {
-          setMaxTeams(data.maxTeams);
+        if (data) {
+          if (data.maxTeams) {
+            setMaxTeams(data.maxTeams);
+          }
+          if (data.isRegistrationClosed || (data.teamCount !== undefined && data.teamCount >= (data.maxTeams || 30))) {
+            setIsClosed(true);
+          }
         }
       })
       .catch(console.error);
@@ -208,8 +214,8 @@ export default function Home() {
           </div>
           
           <h1 className="text-7xl lg:text-[7rem] font-black mb-4 tracking-tighter leading-[0.9]">
-            DEVOPS <br/>
-            <span className="text-gradient drop-shadow-[0_0_20px_rgba(255,0,234,0.3)]">HACKATHON</span>
+            DEVSPRINT <br/>
+            <span className="text-gradient drop-shadow-[0_0_20px_rgba(255,0,234,0.3)]">2026</span>
           </h1>
           
           <p className="text-xl md:text-3xl text-white font-mono mb-10 font-bold tracking-widest mt-6">
@@ -217,14 +223,18 @@ export default function Home() {
           </p>
           
           <p className="text-gray-300 max-w-2xl mx-auto lg:mx-0 mb-12 leading-relaxed text-lg bg-black/40 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
-            A high-stakes, competitive DevOps-focused hackathon. Form your elite team of 4, solve real-world infrastructure challenges, and prove your automation supremacy.
+            A high-stakes, competitive DevOps-focused hackathon. Form your elite team of 2-3 members, solve real-world infrastructure challenges, and prove your automation supremacy.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
             <Link href="/register" className="w-full sm:w-auto relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#00f3ff] to-[#ff00ea] rounded-xl blur opacity-70 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+              <div className={`absolute -inset-1 bg-gradient-to-r ${isClosed ? "from-red-500 to-yellow-500 opacity-60" : "from-[#00f3ff] to-[#ff00ea] opacity-70 animate-pulse"} rounded-xl blur group-hover:opacity-100 transition duration-500`}></div>
               <button className="relative w-full sm:w-auto bg-black text-white px-10 py-5 rounded-xl font-black tracking-widest flex items-center justify-center gap-3 border border-white/20 hover:scale-105 transition-transform duration-300 text-lg">
-                REGISTER TEAM <TerminalSquare className="w-6 h-6 text-[#00f3ff]" />
+                {isClosed ? (
+                  <>REGISTRATION CLOSED <TerminalSquare className="w-6 h-6 text-red-400" /></>
+                ) : (
+                  <>REGISTER TEAM <TerminalSquare className="w-6 h-6 text-[#00f3ff]" /></>
+                )}
               </button>
             </Link>
           </div>
@@ -247,7 +257,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#030014] via-transparent to-[#030014]"></div>
         
         <div className="max-w-7xl mx-auto px-4 text-center z-10 relative">
-          <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-[0.3em] text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">HACKATHON START TIME</h2>
+          <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-[0.3em] text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">DEVSPRINT START TIME</h2>
           <Countdown />
         </div>
       </section>

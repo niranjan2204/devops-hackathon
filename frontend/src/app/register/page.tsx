@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ShieldCheck, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ShieldCheck, AlertCircle, CheckCircle2, Eye, EyeOff, Lock, Users } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "@/lib/api";
@@ -12,6 +12,11 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [configLoading, setConfigLoading] = useState(true);
+  const [isClosed, setIsClosed] = useState(false);
+  const [teamCount, setTeamCount] = useState(0);
+  const [maxTeams, setMaxTeams] = useState(30);
+
   const [formData, setFormData] = useState({
     teamName: "",
     password: "",
@@ -21,6 +26,28 @@ export default function RegisterPage() {
       { name: "", registerNumber: "", email: "" },
     ]
   });
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/config`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          const max = data.maxTeams ?? 30;
+          const count = data.teamCount ?? 0;
+          setMaxTeams(max);
+          setTeamCount(count);
+          if (data.isRegistrationClosed || count >= max) {
+            setIsClosed(true);
+          }
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch registration status:", err);
+      })
+      .finally(() => {
+        setConfigLoading(false);
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +64,9 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (data.error && (data.error.toLowerCase().includes("closed") || data.error.toLowerCase().includes("capacity"))) {
+          setIsClosed(true);
+        }
         throw new Error(data.error || "Registration failed");
       }
 
@@ -108,14 +138,102 @@ export default function RegisterPage() {
     );
   }
 
+  if (configLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center p-4 min-h-[60vh] relative z-10">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#00f3ff] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-400 font-mono text-sm tracking-widest uppercase">Checking Registration Status...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isClosed) {
+    return (
+      <div className="flex-1 flex items-center justify-center p-4 py-16 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="glass-panel p-8 md:p-12 rounded-2xl max-w-xl w-full text-center border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.15)] relative overflow-hidden"
+        >
+          {/* Top highlight bar */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-[#ff00ea]" />
+
+          {/* Icon */}
+          <div className="w-20 h-20 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+            <Lock className="w-10 h-10 text-red-400" />
+          </div>
+
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold tracking-widest uppercase mb-4">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            Maximum Capacity Reached
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-wide">
+            REGISTRATION CLOSED
+          </h1>
+
+          <p className="text-gray-300 text-base md:text-lg mb-8 leading-relaxed">
+            Registrations for <span className="text-[#00f3ff] font-bold">DevSprint 2026</span> are now officially closed. All <span className="text-white font-bold">{maxTeams}</span> team slots have been filled.
+          </p>
+
+          {/* Stats Box */}
+          <div className="bg-black/50 rounded-xl p-5 mb-8 border border-gray-800 grid grid-cols-2 gap-4">
+            <div className="border-r border-gray-800 pr-2">
+              <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1">Slots Allocated</p>
+              <p className="text-2xl font-black text-white">{teamCount} / {maxTeams}</p>
+            </div>
+            <div>
+              <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1">Registration Status</p>
+              <p className="text-2xl font-black text-red-400 uppercase">CLOSED</p>
+            </div>
+          </div>
+
+          {/* Helpful Information */}
+          <div className="bg-yellow-500/10 border border-yellow-500/30 text-gray-300 text-sm p-4 rounded-xl mb-8 flex items-start gap-3 text-left">
+            <AlertCircle className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+            <p>
+              Already registered? You can log in using your Team Leader credentials to view challenge announcements and event updates.
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/login" 
+              className="bg-[#00f3ff] text-black font-black py-3 px-6 rounded-xl hover:bg-white hover:shadow-[0_0_20px_#00f3ff] transition-all tracking-wider text-sm flex items-center justify-center gap-2"
+            >
+              GO TO LOGIN
+            </Link>
+            <Link 
+              href="/" 
+              className="bg-white/5 border border-white/20 text-white font-bold py-3 px-6 rounded-xl hover:bg-white/10 hover:border-white/40 transition-all tracking-wider text-sm flex items-center justify-center"
+            >
+              BACK TO HOME
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 flex flex-col items-center py-12 px-4 relative z-10">
       <div className="max-w-3xl w-full">
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">TEAM REGISTRATION</h1>
-          <div className="flex items-center justify-center gap-2 text-[#9d00ff] bg-[#9d00ff]/10 border border-[#9d00ff]/30 py-2 px-4 rounded-lg inline-flex mx-auto">
-            <ShieldCheck className="w-5 h-5" />
-            <span className="text-sm font-medium">Only the Team Leader should register the team.</span>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">DEVSPRINT 2026 REGISTRATION</h1>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-2 text-[#9d00ff] bg-[#9d00ff]/10 border border-[#9d00ff]/30 py-2 px-4 rounded-lg">
+              <ShieldCheck className="w-5 h-5" />
+              <span className="text-sm font-medium">Only the Team Leader should register the team.</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#00f3ff] bg-[#00f3ff]/10 border border-[#00f3ff]/30 py-2 px-4 rounded-lg">
+              <Users className="w-5 h-5" />
+              <span className="text-sm font-medium">{teamCount} / {maxTeams} Teams Registered</span>
+            </div>
           </div>
         </div>
 
@@ -195,7 +313,7 @@ export default function RegisterPage() {
             ))}
 
             <div className="bg-[#00f3ff]/10 border border-[#00f3ff]/30 p-4 rounded-lg mt-8">
-              <p className="text-[#00f3ff] font-medium text-sm text-center">By submitting, you agree to the hackathon rules and confirm that all members belong to Bannari Amman Institute of Technology.</p>
+              <p className="text-[#00f3ff] font-medium text-sm text-center">By submitting, you agree to the DevSprint 2026 rules and confirm that all members belong to Bannari Amman Institute of Technology.</p>
             </div>
 
             <div className="flex justify-center mt-8 pt-8 border-t border-gray-800">

@@ -16,6 +16,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - default
 
   backend:
     build:
@@ -40,16 +42,22 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - default
+      - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.backend.rule=Host(`${BACKEND_DOMAIN:-api.localhost}`)"
-      - "traefik.http.routers.backend.entrypoints=web,websecure"
+      - "traefik.http.routers.backend.entrypoints=http"
       - "traefik.http.services.backend.loadbalancer.server.port=5000"
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-}
     container_name: devops-hackathon-frontend
     restart: unless-stopped
     ports:
@@ -62,12 +70,21 @@ services:
       - JWT_SECRET=${JWT_SECRET:-super_secret_devops_hackathon_key_2026}
     depends_on:
       - backend
+    networks:
+      - default
+      - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_DOMAIN:-localhost}`)"
-      - "traefik.http.routers.frontend.entrypoints=web,websecure"
+      - "traefik.http.routers.frontend.entrypoints=http"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
 
 volumes:
   pgdata:
     driver: local
+
+networks:
+  default:
+  proxy:
+    external: true

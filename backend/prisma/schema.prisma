@@ -60,12 +60,12 @@ model ProblemSelection {
 
 model HackathonConfig {
   id                String   @id @default("default")
-  hackathonName     String   @default("DevOps Hackathon 2026")
+  hackathonName     String   @default("DevSprint 2026")
   registrationStart DateTime @default(now())
   registrationEnd   DateTime @default(now())
   hackathonStart    DateTime @default(now())
   hackathonEnd      DateTime @default(now())
-  maxTeams          Int      @default(50)
+  maxTeams          Int      @default(30)
   selectionStart    DateTime @default(now())
   selectionEnd      DateTime @default(now())
   
