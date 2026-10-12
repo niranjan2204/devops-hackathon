@@ -25,51 +25,54 @@ export default async function DashboardPage() {
   const otherMembers = team.members.filter((m: any) => !m.isLeader);
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-12 relative z-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+    <div className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12 relative z-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-10 gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold uppercase">WELCOME, {leader?.name}</h1>
-          <p className="text-gray-400 mt-1">Team Leader Dashboard</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase break-words">WELCOME, {leader?.name}</h1>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">Team Leader Dashboard</p>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/problems" className="bg-[#00f3ff] text-black font-bold py-2 px-6 rounded-lg hover:bg-white transition-all flex items-center gap-2">
-            <FileCode2 className="w-5 h-5" /> Problem Statements
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <Link href="/problems" className="w-full sm:w-auto bg-[#00f3ff] text-black font-bold py-2.5 px-5 sm:px-6 rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2 text-xs sm:text-sm">
+            <FileCode2 className="w-4 h-4 sm:w-5 sm:h-5" /> Problem Statements
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Team Info Card */}
-        <div className="lg:col-span-2 glass-panel p-6 md:p-8 rounded-2xl border-[#00f3ff]/30 shadow-[0_0_20px_rgba(0,243,255,0.1)]">
-          <div className="flex items-center gap-3 mb-6 border-b border-gray-800 pb-4">
-            <Users className="w-6 h-6 text-[#00f3ff]" />
-            <h2 className="text-2xl font-bold">Team Information</h2>
+        <div className="lg:col-span-2 glass-panel p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border-[#00f3ff]/30 shadow-[0_0_20px_rgba(0,243,255,0.1)]">
+          <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6 border-b border-gray-800 pb-3 sm:pb-4">
+            <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#00f3ff]" />
+            <h2 className="text-xl sm:text-2xl font-bold">Team Information</h2>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 bg-black/40 p-4 rounded-xl border border-gray-800">
-            <div className="col-span-2 md:col-span-3">
-              <p className="text-gray-500 text-sm">Team Name</p>
-              <p className="text-2xl font-bold text-white">{team.teamName}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 bg-black/40 p-3.5 sm:p-4 rounded-xl border border-gray-800">
+            <div className="sm:col-span-1 md:col-span-3">
+              <p className="text-gray-500 text-xs sm:text-sm">Team Name</p>
+              <p className="text-xl sm:text-2xl font-bold text-white break-words">{team.teamName}</p>
             </div>
-            <div className="col-span-2 md:col-span-1">
-              <p className="text-gray-500 text-sm">Team ID</p>
-              <p className="text-xl font-bold text-[#00f3ff] neon-text-blue">{team.teamId}</p>
+            <div className="sm:col-span-1 md:col-span-1">
+              <p className="text-gray-500 text-xs sm:text-sm">Team ID</p>
+              <p className="text-lg sm:text-xl font-bold text-[#00f3ff] neon-text-blue">{team.teamId}</p>
             </div>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-300 mb-4">Team Members</h3>
-          <div className="space-y-3">
-            <div className="bg-[#9d00ff]/10 border border-[#9d00ff]/30 p-3 rounded-lg flex justify-between items-center">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-300 mb-3 sm:mb-4">Team Members</h3>
+          <div className="space-y-2.5 sm:space-y-3">
+            <div className="bg-[#9d00ff]/10 border border-[#9d00ff]/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5">
               <div>
-                <p className="font-bold text-white">{leader?.name} <span className="text-xs bg-[#9d00ff] text-white px-2 py-0.5 rounded ml-2">LEADER</span></p>
-                <p className="text-sm text-gray-400">{leader?.registerNumber} • {leader?.email}</p>
+                <p className="font-bold text-white text-sm sm:text-base flex items-center flex-wrap gap-2">
+                  <span>{leader?.name}</span>
+                  <span className="text-[10px] bg-[#9d00ff] text-white px-1.5 py-0.5 rounded font-bold">LEADER</span>
+                </p>
+                <p className="text-xs sm:text-sm text-gray-400 break-all">{leader?.registerNumber} • {leader?.email}</p>
               </div>
             </div>
             {otherMembers.map((m: any) => (
-              <div key={m.id} className="bg-black/40 border border-gray-800 p-3 rounded-lg flex justify-between items-center">
+              <div key={m.id} className="bg-black/40 border border-gray-800 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5">
                 <div>
-                  <p className="font-semibold text-gray-200">{m.name}</p>
-                  <p className="text-sm text-gray-500">{m.registerNumber} • {m.email}</p>
+                  <p className="font-semibold text-gray-200 text-sm sm:text-base">{m.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-500 break-all">{m.registerNumber} • {m.email}</p>
                 </div>
               </div>
             ))}

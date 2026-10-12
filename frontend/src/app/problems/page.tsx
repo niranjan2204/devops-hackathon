@@ -96,27 +96,27 @@ export default function ProblemsPage() {
   }
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-12 relative z-10">
+    <div className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12 relative z-10">
       <div className="mb-4 flex">
         <button 
           onClick={() => router.back()} 
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors bg-black/30 px-4 py-2 rounded-lg border border-gray-800 hover:border-[#00f3ff]/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] backdrop-blur-sm"
+          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors bg-black/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-800 hover:border-[#00f3ff]/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] backdrop-blur-sm text-xs sm:text-sm font-bold tracking-wider uppercase"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-bold tracking-wider uppercase">Back</span>
+          <span>Back</span>
         </button>
       </div>
 
-      <div className="text-center mb-12">
+      <div className="text-center mb-8 sm:mb-12">
         <motion.h1 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-bold uppercase mb-4"
+          className="text-2xl sm:text-4xl md:text-5xl font-bold uppercase mb-2 sm:mb-4"
         >
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">CHOOSE YOUR</span> <br className="md:hidden"/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">CHOOSE YOUR</span> <br className="sm:hidden"/>
           <span className="text-[#00f3ff] neon-text-blue">PROBLEM STATEMENT</span>
         </motion.h1>
-        <p className="text-gray-400 max-w-2xl mx-auto">Each team can select ONLY ONE problem statement. Make your choice carefully.</p>
+        <p className="text-gray-400 text-xs sm:text-base max-w-2xl mx-auto px-2">Each team can select ONLY ONE problem statement. Make your choice carefully.</p>
       </div>
 
       <AnimatePresence>

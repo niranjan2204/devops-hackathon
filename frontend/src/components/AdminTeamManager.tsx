@@ -162,21 +162,21 @@ export default function AdminTeamManager() {
             filteredTeams.map((team) => (
               <div key={team.id} className="border border-gray-800 rounded-lg overflow-hidden bg-black/40">
                 <div 
-                  className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-900/50 transition-colors"
+                  className="flex justify-between items-center p-3 sm:p-4 cursor-pointer hover:bg-gray-900/50 transition-colors gap-2"
                   onClick={() => setExpandedTeam(expandedTeam === team.id ? null : team.id)}
                 >
-                  <div className="flex items-center gap-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                    <span className={`px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold border ${
                       team.status === 'APPROVED' || team.status === 'CONFIRMED' ? 'border-green-500 text-green-400 bg-green-900/20' :
                       team.status === 'REJECTED' ? 'border-red-500 text-red-400 bg-red-900/20' :
                       'border-yellow-500 text-yellow-400 bg-yellow-900/20'
                     }`}>
                       {team.status}
                     </span>
-                    <h3 className="text-lg font-bold text-white">{team.teamName}</h3>
-                    <span className="text-gray-500 text-sm">({team.members.length} members)</span>
+                    <h3 className="text-base sm:text-lg font-bold text-white break-words">{team.teamName}</h3>
+                    <span className="text-gray-500 text-xs sm:text-sm">({team.members.length} members)</span>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center flex-shrink-0">
                     {expandedTeam === team.id ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
                   </div>
                 </div>
@@ -186,20 +186,25 @@ export default function AdminTeamManager() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-[#00f3ff] text-sm font-bold mb-3 uppercase tracking-wider">Team Members</h4>
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           {team.members.map((m: any) => (
-                            <div key={m.id} className="text-sm">
-                              <span className="text-white font-medium">{m.name}</span>
-                              {m.isLeader && <span className="ml-2 text-xs bg-[#ff00ea]/20 text-[#ff00ea] px-2 py-0.5 rounded">Leader</span>}
-                              <div className="text-gray-400 text-xs mt-0.5">
-                                {m.email} | {m.registerNumber} {m.phone && `| ${m.phone}`}
+                            <div key={m.id} className="text-sm bg-black/30 p-2.5 rounded border border-gray-800/80">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-white font-medium">{m.name}</span>
+                                {m.isLeader && <span className="text-[10px] bg-[#ff00ea]/20 text-[#ff00ea] px-2 py-0.5 rounded font-bold uppercase">Leader</span>}
+                              </div>
+                              <div className="text-gray-400 text-xs mt-1 break-all">
+                                {m.email}
+                              </div>
+                              <div className="text-gray-500 text-xs mt-0.5">
+                                Reg: {m.registerNumber} {m.phone && `• ${m.phone}`}
                               </div>
                             </div>
                           ))}
                         </div>
                         <div className="mt-4">
                           <h4 className="text-yellow-400 text-sm font-bold mb-2 uppercase tracking-wider">Login Password</h4>
-                          <p className="text-white font-mono bg-black/50 px-3 py-1.5 rounded inline-block border border-gray-700">{team.plainPassword || "Unknown (Old Team)"}</p>
+                          <p className="text-white font-mono bg-black/50 px-3 py-1.5 rounded inline-block border border-gray-700 text-sm break-all">{team.plainPassword || "Unknown (Old Team)"}</p>
                         </div>
                       </div>
                       
@@ -207,39 +212,39 @@ export default function AdminTeamManager() {
                         <h4 className="text-[#00f3ff] text-sm font-bold mb-3 uppercase tracking-wider">Admin Actions</h4>
                         <p className="text-gray-400 text-xs mb-4">Only APPROVED teams can login to the portal and select problem statements.</p>
                         
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex flex-wrap gap-2.5 sm:gap-3">
                           <button 
                             onClick={() => updateStatus(team.id, 'APPROVED')}
                             disabled={team.status === 'APPROVED' || team.status === 'CONFIRMED'}
-                            className="flex items-center gap-2 px-4 py-2 rounded bg-green-900/30 text-green-400 border border-green-500/50 hover:bg-green-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-bold"
+                            className="flex items-center justify-center gap-2 px-3.5 py-2 rounded bg-green-900/30 text-green-400 border border-green-500/50 hover:bg-green-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs sm:text-sm font-bold flex-1 sm:flex-initial"
                           >
-                            <CheckCircle className="w-4 h-4" /> Approve Team
+                            <CheckCircle className="w-4 h-4" /> Approve
                           </button>
                           
                           <button 
                             onClick={() => updateStatus(team.id, 'REJECTED')}
                             disabled={team.status === 'REJECTED'}
-                            className="flex items-center gap-2 px-4 py-2 rounded bg-red-900/30 text-red-400 border border-red-500/50 hover:bg-red-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-bold"
+                            className="flex items-center justify-center gap-2 px-3.5 py-2 rounded bg-red-900/30 text-red-400 border border-red-500/50 hover:bg-red-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs sm:text-sm font-bold flex-1 sm:flex-initial"
                           >
-                            <XCircle className="w-4 h-4" /> Reject Team
+                            <XCircle className="w-4 h-4" /> Reject
                           </button>
 
                           <button 
                             onClick={() => updateStatus(team.id, 'PENDING')}
                             disabled={team.status === 'PENDING'}
-                            className="flex items-center gap-2 px-4 py-2 rounded bg-yellow-900/30 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-bold"
+                            className="flex items-center justify-center gap-2 px-3.5 py-2 rounded bg-yellow-900/30 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs sm:text-sm font-bold flex-1 sm:flex-initial"
                           >
-                            <Clock className="w-4 h-4" /> Set Pending
+                            <Clock className="w-4 h-4" /> Pending
                           </button>
                           
-                          <div className="w-px h-8 bg-gray-800 mx-2 hidden sm:block"></div>
-                          
-                          <button 
-                            onClick={() => deleteTeam(team.id)}
-                            className="flex items-center gap-2 px-4 py-2 rounded bg-red-950 text-red-500 border border-red-900 hover:bg-red-900 transition-colors text-sm font-bold"
-                          >
-                            <Trash2 className="w-4 h-4" /> Delete Team
-                          </button>
+                          <div className="w-full sm:w-auto mt-1 sm:mt-0">
+                            <button 
+                              onClick={() => deleteTeam(team.id)}
+                              className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded bg-red-950 text-red-500 border border-red-900 hover:bg-red-900 transition-colors text-xs sm:text-sm font-bold"
+                            >
+                              <Trash2 className="w-4 h-4" /> Delete Team
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>

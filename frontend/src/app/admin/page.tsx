@@ -17,14 +17,14 @@ export default async function AdminDashboardPage() {
   const problems = data.problems;
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-12 relative z-10">
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold uppercase text-[#ff00ea] neon-text-magenta">ADMIN DASHBOARD</h1>
-        <p className="text-gray-400 mt-1">DevSprint 2026 Overview & Statistics</p>
+    <div className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12 relative z-10">
+      <div className="mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase text-[#ff00ea] neon-text-magenta">ADMIN DASHBOARD</h1>
+        <p className="text-gray-400 text-xs sm:text-sm mt-1">DevSprint 2026 Overview & Statistics</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="glass-panel p-6 rounded-xl border border-gray-800">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-12">
+        <div className="glass-panel p-4 sm:p-6 rounded-xl border border-gray-800">
           <div className="flex items-center gap-3 mb-2">
             <Users className="w-5 h-5 text-[#00f3ff]" />
             <h3 className="text-gray-400 font-semibold text-sm uppercase">Registered Teams</h3>

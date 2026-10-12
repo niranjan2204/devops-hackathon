@@ -43,24 +43,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+    <div className="flex-1 flex items-center justify-center p-3 sm:p-4 py-8 sm:py-12 relative z-10 w-full">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-8 md:p-10 rounded-3xl max-w-md w-full border-[#00f3ff]/30 shadow-[0_0_40px_rgba(0,243,255,0.15)] relative overflow-hidden"
+        className="glass-panel p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl max-w-md w-full border-[#00f3ff]/30 shadow-[0_0_40px_rgba(0,243,255,0.15)] relative overflow-hidden"
       >
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#ff00ea]/20 to-transparent rounded-bl-full"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#00f3ff]/20 to-transparent rounded-tr-full"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#ff00ea]/20 to-transparent rounded-bl-full pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#00f3ff]/20 to-transparent rounded-tr-full pointer-events-none"></div>
 
-        <div className="text-center mb-8 relative z-10">
-          <h1 className="text-3xl font-black mb-2 uppercase tracking-widest text-white">
+        <div className="text-center mb-6 sm:mb-8 relative z-10">
+          <h1 className="text-2xl sm:text-3xl font-black mb-1.5 sm:mb-2 uppercase tracking-widest text-white">
             Team <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-[#ff00ea]">Login</span>
           </h1>
-          <p className="text-gray-400 font-mono text-sm">Enter your credentials to proceed</p>
+          <p className="text-gray-400 font-mono text-xs sm:text-sm">Enter your credentials to proceed</p>
         </div>
 
         {/* Role Selector */}
-        <div className="flex bg-black/50 p-1 rounded-xl mb-8 relative z-10 border border-gray-800">
+        <div className="flex bg-black/50 p-1 rounded-xl mb-6 sm:mb-8 relative z-10 border border-gray-800">
           <button 
             onClick={() => { setRole("leader"); setError(""); }}
             className={`flex-1 py-3 text-sm font-bold tracking-wider rounded-lg transition-all flex justify-center items-center gap-2 ${role === "leader" ? "bg-gradient-to-r from-[#00f3ff]/20 to-[#00f3ff]/10 text-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.2)] border border-[#00f3ff]/30" : "text-gray-500 hover:text-gray-300"}`}

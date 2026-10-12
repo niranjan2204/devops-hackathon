@@ -180,23 +180,27 @@ export default function AdminProblemManager({ initialProblems }: { initialProble
           ) : (
             initialProblems.map((prob) => (
               <div key={prob.id} className="p-4 rounded-lg bg-black/40 border border-gray-800 relative group">
-                <div className="absolute top-4 right-4 flex items-center gap-3">
-                  <span className={`text-xs px-2 py-1 rounded-full border ${
-                    prob.difficulty === 'Expert' ? 'border-red-500 text-red-400' :
-                    prob.difficulty === 'Advanced' ? 'border-orange-500 text-orange-400' :
-                    prob.difficulty === 'Intermediate' ? 'border-yellow-500 text-yellow-400' :
-                    'border-green-500 text-green-400'
-                  }`}>{prob.difficulty}</span>
-                  <button onClick={() => handleEdit(prob)} className="text-gray-500 hover:text-[#00f3ff] transition-colors" title="Edit problem">
-                    <Edit2 className="w-5 h-5" />
-                  </button>
-                  <button onClick={() => handleDelete(prob.id)} className="text-gray-500 hover:text-red-500 transition-colors" title="Delete problem">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-[#00f3ff] font-mono inline-block font-bold">{prob.domain}</span>
+                    <span className={`text-[10px] sm:text-xs px-2 py-0.5 rounded-full border ${
+                      prob.difficulty === 'Expert' ? 'border-red-500 text-red-400' :
+                      prob.difficulty === 'Advanced' ? 'border-orange-500 text-orange-400' :
+                      prob.difficulty === 'Intermediate' ? 'border-yellow-500 text-yellow-400' :
+                      'border-green-500 text-green-400'
+                    }`}>{prob.difficulty}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => handleEdit(prob)} className="text-gray-400 hover:text-[#00f3ff] transition-colors p-1" title="Edit problem">
+                      <Edit2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                    <button onClick={() => handleDelete(prob.id)} className="text-gray-400 hover:text-red-500 transition-colors p-1" title="Delete problem">
+                      <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold text-white mb-1 pr-24">{prob.title}</h3>
-                <span className="text-xs text-[#00f3ff] font-mono mb-2 inline-block">{prob.domain}</span>
-                <p className="text-gray-400 text-sm mt-2">{prob.description}</p>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1">{prob.title}</h3>
+                <p className="text-gray-400 text-xs sm:text-sm mt-2">{prob.description}</p>
               </div>
             ))
           )}

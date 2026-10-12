@@ -41,14 +41,14 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex-1 w-full flex items-center justify-center p-4 relative z-10 min-h-[80vh]">
-      <div className="w-full max-w-md glass-panel p-8 rounded-2xl border border-gray-800 shadow-[0_0_30px_rgba(255,0,234,0.15)]">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#ff00ea] to-[#9d00ff] rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_#ff00ea]">
-            <Shield className="w-8 h-8 text-white" />
+    <div className="flex-1 w-full flex items-center justify-center p-4 sm:p-6 relative z-10 min-h-[80vh] py-12">
+      <div className="w-full max-w-md glass-panel p-5 sm:p-8 rounded-2xl border border-gray-800 shadow-[0_0_30px_rgba(255,0,234,0.15)]">
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#ff00ea] to-[#9d00ff] rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_#ff00ea]">
+            <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h2 className="text-2xl font-black text-white tracking-widest uppercase">Admin Override</h2>
-          <p className="text-gray-400 text-sm mt-2 font-mono">Restricted Access Portal</p>
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-widest uppercase">Admin Override</h2>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2 font-mono">Restricted Access Portal</p>
         </div>
 
         {error && (

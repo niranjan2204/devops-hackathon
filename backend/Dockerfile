@@ -10,7 +10,12 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-RUN npm ci
+# Configure npm fetch retry and timeout for flaky network connections during engine downloads
+RUN npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000
+
+RUN npm ci || (echo "Retrying npm ci..." && sleep 5 && npm ci)
 
 # Generate Prisma Client for PostgreSQL
 RUN npx prisma generate
